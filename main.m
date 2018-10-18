@@ -36,11 +36,11 @@ end
 if A == 1
     fprintf('v1 sensor plot...\n');
     animalArray = json.animals;
+    values = []; times = [];
         for i = 1:size(animalArray)
             y = []; d = [];
             tagDataArray = animalArray(i).tagData;
             name = tagDataArray(1).serial_number.x_numberLong;
-            disp(name);
               for j = 1:size(tagDataArray)
                     tag = tagDataArray(j);
                     TF = contains(tag.time,'PM')
@@ -54,17 +54,32 @@ if A == 1
                         fprintf("AM\n"+time)
                         d = [d, time]; 
                     end
-                    y = [y, tag.first_sensor_value];                    
+                    value = tag.first_sensor_value;
+                   
+                    y = [y, value];                    
               end
-                N = size(animalArray);
-                W = floor(sqrt(N));
-                width = W(1)+1;
-                height = ceil(N/W);
-                %subplot(width,height,i);
-                plot(d,y);              % plot the data,
-                %hold on;
-                datetick('x','HH:MM')   % give the a xaxis time label ticks..
-                title(name);
+              values = [values, y];
+              times = [times, d];
+              
+              %find the the size of the largest vector
+              max = 0;
+              for n = 1:size(values)
+              
+              
+              end
+                  
+            
+              
+              N = size(animalArray);
+              W = floor(sqrt(N));
+              width = W(1)+1;
+              height = ceil(N/W);
+              %subplot(width,height,i);
+              figure(i)
+              plot(d,y);              % plot the data,
+              %hold on;
+              datetick('x','HH:MM')   % give the a xaxis time label ticks..
+              title(name);
         end
 end
 
