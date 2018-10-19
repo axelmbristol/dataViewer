@@ -1,4 +1,75 @@
 close all;
+
+h1 = openfig('activity_70091100056-4113.fig','reuse'); % open figure
+ax1 = gca; % get handle to axes of figure
+h2 = openfig('activity_70091100056-4213.fig','reuse');
+ax2 = gca;
+h3 = openfig('activity_70091100056-4313.fig','reuse'); % open figure
+ax3 = gca; % get handle to axes of figure
+h4 = openfig('activity_70091100056-4413.fig','reuse');
+ax4 = gca;
+h5 = openfig('activity_70091100056-4513.fig','reuse');
+ax5 = gca;
+
+h12 = openfig('rssi_70091100056-4113.fig','reuse'); % open figure
+ax12 = gca; % get handle to axes of figure
+h22 = openfig('rssi_70091100056-4213.fig','reuse');
+ax22 = gca;
+h32 = openfig('rssi_70091100056-4313.fig','reuse'); % open figure
+ax32 = gca; % get handle to axes of figure
+h42 = openfig('rssi_70091100056-4413.fig','reuse');
+ax42 = gca;
+h52 = openfig('rssi_70091100056-4513.fig','reuse');
+ax52 = gca;
+
+
+h6 = figure; %create new figure
+s1 = subplot(5,2,1); %create and get handle to the subplot axes
+title("activity 70091100056-4/1/13 67")
+s2 = subplot(5,2,3);
+title("activity 70091100056-4/2/13 67")
+s3 = subplot(5,2,5);
+title("activity 70091100056-4/3/13 67")
+s4 = subplot(5,2,7);
+title("activity 70091100056-4/4/13 67")
+s5 = subplot(5,2,9);
+title("activity 70091100056-4/5/13 67")
+
+s12 = subplot(5,2,2); %create and get handle to the subplot axes
+title("rssi 70091100056-4/1/13 67")
+s22 = subplot(5,2,4);
+title("rssi 70091100056-4/2/13 67")
+s32 = subplot(5,2,6);
+title("rssi 70091100056-4/3/13 67")
+s42 = subplot(5,2,8);
+title("rssi 70091100056-4/4/13 67")
+s52 = subplot(5,2,10);
+title("rssi 70091100056-4/5/13 67")
+
+fig1 = get(ax1,'children'); %get handle to all the children in the figure
+fig2 = get(ax2,'children');
+fig3 = get(ax3,'children');
+fig4 = get(ax4,'children');
+fig5 = get(ax5,'children');
+fig12 = get(ax12,'children'); %get handle to all the children in the figure
+fig22 = get(ax22,'children');
+fig32 = get(ax32,'children');
+fig42 = get(ax42,'children');
+fig52 = get(ax52,'children');
+
+copyobj(fig1,s1); %copy children to new parent axes i.e. the subplot axes
+copyobj(fig2,s2);
+copyobj(fig3,s3);
+copyobj(fig4,s4);
+copyobj(fig5,s5);
+copyobj(fig12,s12); %copy children to new parent axes i.e. the subplot axes
+copyobj(fig22,s22);
+copyobj(fig32,s32);
+copyobj(fig42,s42);
+copyobj(fig52,s52);
+
+
+
 fprintf('start...\n');
 fprintf('connecting to mongoDB...\n');
 javaaddpath('C:\Users\Axel\Documents\MATLAB\JAR\mongo-java-driver-3.8.2.jar')
@@ -10,10 +81,11 @@ fprintf('find collections...\n');
 colls = db.getCollectionNames().toArray();
 disp(colls);
 
-currColl = "_70091100056-4/1/13";
+currColl = "_70091100056-4/5/13";
 disp("currColl="+currColl);
 
 coll = db.getCollection(currColl).findOne().toString().toCharArray;
+
 fprintf('coll=\n');
 disp(size(coll))
 
@@ -43,7 +115,7 @@ if A == 1
     names = [];
         
         names = strings(1,r);
-        figure(); hold on
+        figure('NumberTitle', 'off', 'Name', currColl+"  "+r); hold on
         for i = 1:size(animalArray)
             times = [];
             values = [];
@@ -61,6 +133,7 @@ if A == 1
                         fprintf("AM\n"+time)
                     end
                     value = tag.first_sensor_value;
+                    %value = str2num(tag.signal_strength);
                     if value < 0
                         value = 0;
                     end
@@ -83,6 +156,7 @@ if A == 1
         %y = values(i,1:maxCols);
         plot(times, values);  
         datetick('x','HH:MM') 
+        title(currColl+"  "+r); 
               
         end
         hold off
